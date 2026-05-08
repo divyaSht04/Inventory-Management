@@ -66,4 +66,15 @@ public class JwtService {
             return false;
         }
     }
+
+    public long getRemainingValidityMs(String token) {
+        try{
+            Date expiration = getClaims(token).getExpiration();
+            long remaining = expiration.getTime() - System.currentTimeMillis();
+            return Math.max(0, remaining);
+        }catch (Exception e){
+            return 0;
+        }
+    }
+
 }

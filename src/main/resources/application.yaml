@@ -20,6 +20,12 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yml
   profiles:
     active: jwt
+  data:
+    redis:
+      host: localhost
+      port: 6379
+#      password:
+#      connect-timeout:
 
 server:
   port: 8080
