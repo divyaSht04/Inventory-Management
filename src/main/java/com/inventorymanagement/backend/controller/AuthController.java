@@ -70,4 +70,16 @@ public class AuthController {
         String newRefreshToken = refreshTokenService.createRefreshToken(info.username(), info.role());
         return ResponseEntity.ok(new TokenRefreshResponse(newAccessToken, newRefreshToken));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            long remainingValidity = jwtService.getRemainingValidityMs(token);
+            if (remainingValidity > 0) {
+                blackListService.blackListToken(token, remainingValidity);
+            }
+        }
+        return ResponseEntity.noContent().build();
+    }
 }
